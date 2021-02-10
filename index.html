@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+    <link rel="stylesheet" href="styles.css">
     <title>React Sports Game</title>
 </head>
 <body>
@@ -27,92 +27,145 @@ class Team extends React.Component{
 
        this.state ={
          shots: 0,
-         goals: 0,
+         score: 0
        }
-       this.shotSound = new Audio ('./Music/sound.mp3') 
-       this.scoreSound = new Audio ('./Music/sound.mp3')
 
-
+     this.shotSound = new Audio('soccer (1).mp3')
+     
+     this.scoreSound = new Audio('soccer.mp3')
 
      }
        shotHandler = () =>{
-       let score = this.state.score
-       this.shotSound.play ()
-        let goals = this.state.goals
+
+        let score = this.state.score
+        this.shotSound.play()
 
         if(Math.random()>0.35) {
-          goals += 1
-          setTimeout(()=>{ 
-            this.scoreSound.play ()
-          }, 100)
+          score += 1
 
+          setTimeout(()=>{
+
+          
+          this.scoreSound.play()
+        }, 100)
         }
          this.setState((state,props)=>({
            shots: state.shots + 1,
-           goals
+           score
          }))
        }
 
 
 
      render(){
-       let shotPercentageDiv
-       if(this.state.shots){ 
-         const shotPercentage = Math.round((this.state.score/ this.state.shots)*100)
-         shotPercentageDiv = (
-           <div>
-           <strong> Shooting %: {shotPercentage}</strong>
-           </div>
-         )
-       }
 
+      let shotPercentageDiv
+       if(this.state.shots){
+       const shotPercentage = Math.round((this.state.score/ this.state.shots)*100)
+         shotPercentageDiv = ( 
+               <div>
+                 <strong> shooting %:{shotPercentage}</strong>
+                </div>)
+       }
        return(
          <div className="Team">
           <h3>{this.props.name}</h3>
         
           <div className="style-me">
-            <img height="100px" width="100px" src={this.props.logo} alt={this.props.name} />
+            <img src={this.props.logo} alt={this.props.name}/>
             </div >
             <div>
               <em>Shots:</em>{this.state.shots}
               </div>
               <div>
                 
-                <strong>Goals:</strong>{this.state.goals}
+                <strong>Scores:</strong>{this.state.score}
                 </div>
-                {shotPercentageDiv}
+
+               {shotPercentageDiv}
+
                 <button onClick ={this.shotHandler}>Shoot!</button>
           </div>
        )
      }
-   }function App(props) {
+   } 
+   
+   function Game(props){
      return(
-       <div className="Game">
-       <h1>Welcome To Old Trafford: {props.venus}</h1>
+       <div className ="Game">
+        <h1>Welcome to: {props.venue}</h1>
+    <div className="stats">
+        <Team 
+        name= {props.visitingTeam.name}
+        logo={props.visitingTeam.logoSrc}
+        />
 
-        <div className="stats">
-        <h2>Home</h2>
-        <Team name= "MC"
-        logo="./image/MC.jpg"/>
-
-        <div className="Soccer">
+        <div className="versus">
           <h1>VS</h1>
           </div>
-        <h2>Away</h2>
-        <Team name= "MUFC"
-        logo="./image/MUFC.png"/>
-
+        
+        <Team 
+        name= {props.homeTeam.name}
+        logo={props.homeTeam.logoSrc}
+        />
        </div>
-        </div>
-     )
+       </div>
+      )
+  
    }
+
+   
+   
+   
+   function App(props) {
+
+    const kenzie ={
+      name:'fhn1',
+      logoSrc:'./image/MC.jpg'
+    }
+
+    const oasis ={
+      name:'bhn1',
+      logoSrc: './image/manchester01.jpeg'
+      
+    }
+
+     const lion ={
+       name: 'Monkey',
+       logoSrc:'./image/butterfly.jpg'
+     }
+
+     const tiger ={
+       name:'Donkey',
+       logoSrc:'./image/dragon fly.jpg'
+     }
+
+
+     return(
+       <div className="App">
+        <Game
+         venue ="fhn2"
+         homeTeam ={oasis}
+         visitingTeam ={kenzie}
+         
+         />
+        <Game 
+        venue ="bhn2"
+        homeTeam ={lion}
+        visitingTeam ={tiger}
+        
+        
+        />
+      </div>
+     )
+    }
     
     ReactDOM.render(
       <App />,
       document.getElementById('root')
-       )
-  
-</script>   
-</body>
-</html>
-
+       
+    )
+    
+    </script>
+    </body>
+    </html>
